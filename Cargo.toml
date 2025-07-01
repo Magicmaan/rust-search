@@ -1,0 +1,11 @@
+[package]
+name = "rust-search"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+jwalk = "0.8.1"
+# rustqlite = "0.36.0"
+[dependencies.rusqlite]
+version = "0.36.0"
+features = ["bundled"]

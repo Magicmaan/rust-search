@@ -18,3 +18,7 @@ Will eventually replace using Everything tool for Windows.
 - [ ] File change notifying
 - [ ] Fuzzy Searching
 - [ ] Command Line Utility
+
+## LONG TERM TODO
+
+- [ ] TUI Interface

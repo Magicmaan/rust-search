@@ -17,3 +17,4 @@ Will eventually replace using Everything tool for Windows.
 - [ ] Research file traversal
 - [ ] File change notifying
 - [ ] Fuzzy Searching
+- [ ] Command Line Utility

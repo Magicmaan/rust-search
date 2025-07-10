@@ -1,0 +1,201 @@
+📁 multirust-config.toml
+   📂 /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/multirust-config.toml
+📁 .config
+   📂 /root/snap/pinta/56/.config
+📁 gtk-3.0
+   📂 /root/snap/pinta/56/.config/gtk-3.0
+📁 settings.ini
+   📂 /root/snap/pinta/56/.config/gtk-3.0/settings.ini
+📁 gtk.css
+   📂 /root/snap/pinta/56/.config/gtk-3.0/gtk.css
+📁 bookmarks
+   📂 /root/snap/pinta/56/.config/gtk-3.0/bookmarks
+📁 ibus
+   📂 /root/snap/pinta/56/.config/ibus
+📁 bus
+   📂 /root/snap/pinta/56/.config/ibus/bus
+📁 gtk-2.0
+   📂 /root/snap/pinta/56/.config/gtk-2.0
+📁 gtkfilechooser.ini
+   📂 /root/snap/pinta/56/.config/gtk-2.0/gtkfilechooser.ini
+📁 user-dirs.locale
+   📂 /root/snap/pinta/56/.config/user-dirs.locale
+📁 user-dirs.dirs
+   📂 /root/snap/pinta/56/.config/user-dirs.dirs
+📁 fontconfig
+   📂 /root/snap/pinta/56/.config/fontconfig
+📁 fonts.conf
+   📂 /root/snap/pinta/56/.config/fontconfig/fonts.conf
+📁 .config
+   📂 /root/snap/pinta/62/.config
+📁 gtk-3.0
+   📂 /root/snap/pinta/62/.config/gtk-3.0
+📁 settings.ini
+   📂 /root/snap/pinta/62/.config/gtk-3.0/settings.ini
+📁 gtk.css
+   📂 /root/snap/pinta/62/.config/gtk-3.0/gtk.css
+📁 bookmarks
+   📂 /root/snap/pinta/62/.config/gtk-3.0/bookmarks
+📁 ibus
+   📂 /root/snap/pinta/62/.config/ibus
+📁 bus
+   📂 /root/snap/pinta/62/.config/ibus/bus
+📁 gtk-2.0
+   📂 /root/snap/pinta/62/.config/gtk-2.0
+📁 gtkfilechooser.ini
+   📂 /root/snap/pinta/62/.config/gtk-2.0/gtkfilechooser.ini
+📁 user-dirs.locale
+   📂 /root/snap/pinta/62/.config/user-dirs.locale
+📁 user-dirs.dirs
+   📂 /root/snap/pinta/62/.config/user-dirs.dirs
+📁 fontconfig
+   📂 /root/snap/pinta/62/.config/fontconfig
+📁 fonts.conf
+   📂 /root/snap/pinta/62/.config/fontconfig/fonts.conf
+📁 .config
+   📂 /root/snap/snap-store/1113/.config
+📁 autostart
+   📂 /root/snap/snap-store/1113/.config/autostart
+📁 ubuntu-software-service.desktop
+   📂 /root/snap/snap-store/1113/.config/autostart/ubuntu-software-service.desktop
+📁 gtk-3.0
+   📂 /root/snap/snap-store/1113/.config/gtk-3.0
+📁 settings.ini
+   📂 /root/snap/snap-store/1113/.config/gtk-3.0/settings.ini
+📁 gtk.css
+   📂 /root/snap/snap-store/1113/.config/gtk-3.0/gtk.css
+📁 bookmarks
+   📂 /root/snap/snap-store/1113/.config/gtk-3.0/bookmarks
+📁 ibus
+   📂 /root/snap/snap-store/1113/.config/ibus
+📁 bus
+   📂 /root/snap/snap-store/1113/.config/ibus/bus
+📁 gtk-2.0
+   📂 /root/snap/snap-store/1113/.config/gtk-2.0
+📁 gtkfilechooser.ini
+   📂 /root/snap/snap-store/1113/.config/gtk-2.0/gtkfilechooser.ini
+📁 user-dirs.locale
+   📂 /root/snap/snap-store/1113/.config/user-dirs.locale
+📁 user-dirs.dirs
+   📂 /root/snap/snap-store/1113/.config/user-dirs.dirs
+📁 fontconfig
+   📂 /root/snap/snap-store/1113/.config/fontconfig
+📁 fonts.conf
+   📂 /root/snap/snap-store/1113/.config/fontconfig/fonts.conf
+📁 .config
+   📂 /root/snap/snap-store/1270/.config
+📁 autostart
+   📂 /root/snap/snap-store/1270/.config/autostart
+📁 ubuntu-software-service.desktop
+   📂 /root/snap/snap-store/1270/.config/autostart/ubuntu-software-service.desktop
+📁 gtk-3.0
+   📂 /root/snap/snap-store/1270/.config/gtk-3.0
+📁 settings.ini
+   📂 /root/snap/snap-store/1270/.config/gtk-3.0/settings.ini
+📁 gtk.css
+   📂 /root/snap/snap-store/1270/.config/gtk-3.0/gtk.css
+📁 bookmarks
+   📂 /root/snap/snap-store/1270/.config/gtk-3.0/bookmarks
+📁 ibus
+   📂 /root/snap/snap-store/1270/.config/ibus
+📁 bus
+   📂 /root/snap/snap-store/1270/.config/ibus/bus
+📁 gtk-2.0
+   📂 /root/snap/snap-store/1270/.config/gtk-2.0
+📁 gtkfilechooser.ini
+   📂 /root/snap/snap-store/1270/.config/gtk-2.0/gtkfilechooser.ini
+📁 user-dirs.locale
+   📂 /root/snap/snap-store/1270/.config/user-dirs.locale
+📁 user-dirs.dirs
+   📂 /root/snap/snap-store/1270/.config/user-dirs.dirs
+📁 fontconfig
+   📂 /root/snap/snap-store/1270/.config/fontconfig
+📁 fonts.conf
+   📂 /root/snap/snap-store/1270/.config/fontconfig/fonts.conf
+📁 .config
+   📂 /root/.config
+📁 pulse
+   📂 /root/.config/pulse
+📁 7583ff9bf82345f2a1c2a6b8f75f3a59-runtime
+   📂 /root/.config/pulse/7583ff9bf82345f2a1c2a6b8f75f3a59-runtime
+📁 ibus
+   📂 /root/.config/ibus
+📁 bus
+   📂 /root/.config/ibus/bus
+📁 configstore
+   📂 /root/.config/configstore
+📁 update-notifier-pake-cli.json
+   📂 /root/.config/configstore/update-notifier-pake-cli.json
+📁 micro
+   📂 /root/.config/micro
+📁 settings.json
+   📂 /root/.config/micro/settings.json
+📁 backups
+   📂 /root/.config/micro/backups
+📁 bindings.json
+   📂 /root/.config/micro/bindings.json
+📁 buffers
+   📂 /root/.config/micro/buffers
+📁 history
+   📂 /root/.config/micro/buffers/history
+📁 config.yml
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/infer-0.16.0/.chglog/config.yml
+📁 rollup.config.js
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-plugin-oauth-2.0.0/rollup.config.js
+📁 config.toml
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/jsonptr-0.6.3/.cargo/config.toml
+📁 rollup.config.js
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-plugin-fs-2.2.0/rollup.config.js
+📁 config.rs
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-plugin-fs-2.2.0/src/config.rs
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-winres-0.1.1/.changes/config.json
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tray-icon-0.19.2/.changes/config.json
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tao-0.31.1/.changes/config.json
+📁 rollup.config.js
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-plugin-window-state-2.2.0/rollup.config.js
+📁 rollup.config.js
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-plugin-http-2.2.0/rollup.config.js
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/javascriptcore-rs-1.1.2/.changes/config.json
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/global-hotkey-0.6.3/.changes/config.json
+📁 deny_single_threaded_sqlite_config.rs
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusqlite-0.36.0/tests/deny_single_threaded_sqlite_config.rs
+📁 config_log.rs
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusqlite-0.36.0/tests/config_log.rs
+📁 config.rs
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusqlite-0.36.0/src/config.rs
+📁 config.yml
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hashlink-0.10.0/.circleci/config.yml
+📁 config.yml
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.22.1/.circleci/config.yml
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/muda-0.15.3/.changes/config.json
+📁 config.json
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/libappindicator-0.9.0/.changes/config.json
+📁 pkg-config-0.3.32
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32
+📁 Cargo.toml
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/Cargo.toml
+📁 .github
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/.github
+📁 workflows
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/.github/workflows
+📁 CHANGELOG.md
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/CHANGELOG.md
+📁 Cargo.lock.msrv
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/Cargo.lock.msrv
+📁 Cargo.toml.orig
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/Cargo.toml.orig
+📁 LICENSE-MIT
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/LICENSE-MIT
+📁 .gitignore
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/.gitignore
+📁 LICENSE-APACHE
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/LICENSE-APACHE
+📁 README.md
+   📂 /root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/README.md
+   ... (showing first 100 results)

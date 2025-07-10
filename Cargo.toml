@@ -8,4 +8,4 @@ jwalk = "0.8.1"
 # rustqlite = "0.36.0"
 [dependencies.rusqlite]
 version = "0.36.0"
-features = ["bundled"]
+features = ["bundled", "vtab"]

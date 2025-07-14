@@ -122,10 +122,9 @@ The indexer automatically skips:
 
 **Initial Results** (on typical home directory):
 
-- ~50,000 files indexed in ~2-3 seconds
-- Search queries return in <2ms (for 20 results, 50ms uncapped)
-- Database size: ~5-10MB for typical home directory
-- Memory usage: <50MB during indexing
+- ~150,000 files in 15s
+- Search queries return in <3ms (for 100 results, unknown uncapped but fast)
+- Database size: ~200MB for whole system
 
 ## 🤝 Contributing
 

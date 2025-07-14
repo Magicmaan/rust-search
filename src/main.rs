@@ -1,7 +1,10 @@
+use diesel::row;
 use jwalk::WalkDirGeneric;
-
-use rusqlite::{Connection, Result, vtab};
+use libsql::{params, Result as LibSqlResult};
+use tokio;
+mod database;
 mod search;
+
 #[derive(Debug)]
 struct FileEntry {
     id: i32,
@@ -12,56 +15,15 @@ struct FileEntry {
     modified_at: String,
 }
 
-fn create_db() -> Result<()> {
-    let conn = Connection::open("search.db")?;
-
-    conn.execute("DROP TABLE IF EXISTS files_fts", [])?;
-    conn.execute("DROP TABLE IF EXISTS files", [])?;
-
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS files (
-            id          INTEGER PRIMARY KEY,
-            path        TEXT NOT NULL,
-            filename    TEXT NOT NULL,
-            extension   TEXT,
-            size        INTEGER NOT NULL,
-            modified_at TEXT NOT NULL,
-            UNIQUE(path)
-        )",
-        [],
-    )?;
-
-
-    conn.execute("CREATE VIRTUAL TABLE IF NOT EXISTS files_fts USING fts5(
-        row,
-        path,
-        filename,
-        extension,
-        tokenize='trigram',
-        prefix='2,3'
-    )", [])?;
-    println!("Database created successfully.");
-    // Implement database creation logic here
-    // This is a placeholder function
-
-    conn.close().expect("Failed to close the database connection");
-    Ok(())
-}
-
-
-
 fn run_search() -> Result<WalkDirGeneric<(usize, bool)>, std::io::Error> {
-    let count = 0;
-    
-
-    
-    let walk_dir = WalkDirGeneric::<(usize,bool)>::new(
-        std::env::var("HOME").unwrap_or_else(|_| "/home".to_string()), )
+    println!("Searching for files in home directory... ");
+    let now = std::time::Instant::now();
+    let walk_dir = WalkDirGeneric::<(usize, bool)>::new("/".to_string())
         .process_read_dir(|_depth, _path, _read_dir_state, children| {
             // 3. Custom skip
             children.iter_mut().for_each(|dir_entry_result| {
                 if let Ok(dir_entry) = dir_entry_result {
-                    if dir_entry.file_name() == "AppData"  {
+                    if dir_entry.file_name() == "AppData" {
                         dir_entry.read_children_path = None;
                     }
                     if dir_entry.file_name() == "node_modules" {
@@ -71,115 +33,197 @@ fn run_search() -> Result<WalkDirGeneric<(usize, bool)>, std::io::Error> {
                         dir_entry.read_children_path = None;
                     }
                     if dir_entry.file_name() == "vendor" {
-                        dir_entry.read_children_path = None;    
+                        dir_entry.read_children_path = None;
                     }
                     if dir_entry.file_name() == "build" {
                         dir_entry.read_children_path = None;
                     }
-                    if dir_entry.depth == 7 {
+                    if dir_entry.file_name() == ".cache" {
                         dir_entry.read_children_path = None;
                     }
-
-                    
+                    if dir_entry.depth == 10 {
+                        dir_entry.read_children_path = None;
+                    }
                 }
+                // println!("Processing directory: {}", _path.display());
             });
-        }).skip_hidden(false);
-        println!("Total entries: {}", count);
-        // Implement search logic here
-        Ok(walk_dir)
+        })
+        .skip_hidden(false);
+
+    let elapsed = now.elapsed();
+    println!("Search completed in: {:.10?}", elapsed);
+    // print!("Search completed. ");
+    // Implement search logic here
+
+    Ok(walk_dir)
 }
 
-fn insert_files_to_db(search_result: WalkDirGeneric<(usize, bool)>) -> Result<()> {
-    let mut con = Connection::open("search.db")?;
-    let tx = con.transaction()?;
+async fn insert_files_to_db(search_result: WalkDirGeneric<(usize, bool)>) -> LibSqlResult<()> {
+    let now = std::time::Instant::now();
+    println!("Inserting files into database...");
+    println!("This may take a while depending on the number of files.");
 
-    {
-        let mut stmt = tx.prepare("
-            INSERT OR IGNORE INTO files (
-                path, 
-                filename, 
-                extension, 
-                size, 
-                modified_at 
-            ) VALUES (
-                ?1, 
-                ?2, 
-                ?3, 
-                ?4,
-                ?5
-            )
-        ")?;
+    let db = libsql::Builder::new_local("search.db").build().await?;
+    let conn = db.connect()?;
 
-        let mut fts_stmt = tx.prepare("
-            INSERT OR IGNORE INTO files_fts (
-                row, 
-                path, 
-                filename, 
-                extension 
-            ) VALUES (
-                ?1, 
-                ?2, 
-                ?3,
-                ?4
-            )
-        ")?;
+    conn.execute_batch(
+        "PRAGMA journal_mode = OFF;
+        PRAGMA synchronous = OFF;
+        PRAGMA journal_size_limit = 1000000;
+        PRAGMA cache_size = 100000;
+        PRAGMA temp_store = memory;
+        PRAGMA locking_mode = EXCLUSIVE;
+        PRAGMA mmap_size = 268435456;
+        PRAGMA optimize;",
+    )
+    .await?;
 
-        for entry in search_result {
-            match entry {
-                Ok(dir_entry) => {
+    conn.execute("BEGIN TRANSACTION;", params![]).await?;
+
+    let mut count = 0;
+    let mut batch_count = 0;
+    let batch_size = 100000;
+    let mut new_query = String::with_capacity(batch_size * 200); // Pre-allocate ~200 chars per record
+    new_query.push_str(
+        "INSERT OR REPLACE INTO files (path, filename, extension, size, modified_at) VALUES ",
+    );
+    let mut first = true;
+
+    for entry in search_result {
+        if let Ok(dir_entry) = entry {
+            if let Ok(metadata) = dir_entry.metadata() {
+                if metadata.is_file() {
+                    // Get the path, filename, extension, size, and modified_at
                     let path_str = dir_entry.path().display().to_string();
                     let filename = dir_entry.file_name().to_string_lossy().to_string();
-                    let extension = dir_entry.path().extension()
+                    let extension = dir_entry
+                        .path()
+                        .extension()
                         .and_then(|ext| ext.to_str())
                         .unwrap_or("")
                         .to_string();
+                    let size = metadata.len() as i64;
 
-                    // Insert into main table
-                    stmt.execute(rusqlite::params![&path_str, &filename, &extension, 1, "1"])?;
-                    
-                    // Get the row ID (either newly inserted or existing)
-                    let row_id = if tx.changes() > 0 {
-                        // New row was inserted
-                        tx.last_insert_rowid()
+                    // convert the modified time to seconds since UNIX epoch
+                    // using the modified time as a fallback if not available
+                    let modified_at = metadata
+                        .modified()
+                        .unwrap_or(std::time::SystemTime::UNIX_EPOCH)
+                        .duration_since(std::time::SystemTime::UNIX_EPOCH) // Change this line
+                        .unwrap_or_default()
+                        .as_secs() as i64;
+
+                    // Escape the single quotes in path and filename as sqlite requires it
+                    // this isn't done automatically as using compound parameters
+                    let formatted = format!(
+                        "('{}', '{}', '{}', {}, {})",
+                        path_str.replace("'", "''"),
+                        filename.replace("'", "''"),
+                        extension.replace("'", "''"),
+                        size,
+                        modified_at
+                    );
+
+                    // append the values to the query
+                    // query should be like:
+                    // INSERT INTO files (path, filename, extension, size, modified_at) VALUES (v1), (v2), (v3), ...
+                    // where v1, v2, v3 are the values for each file
+                    if first {
+                        new_query.push_str(&formatted);
+                        first = false;
                     } else {
-                        // Row already existed, find its ID
-                        let mut id_stmt = tx.prepare("SELECT id FROM files WHERE path = ?1")?;
-                        id_stmt.query_row([&path_str], |row| row.get::<_, i64>(0))?
-                    };
+                        new_query.push_str(", ");
+                        new_query.push_str(&formatted);
+                    }
 
-                    // Insert into FTS table
-                    fts_stmt.execute(rusqlite::params![row_id, &path_str, &filename, &extension])?;
-                },
-                Err(e) => eprintln!("Error reading directory entry: {}", e),
+                    count += 1;
+                    batch_count += 1;
+
+                    // insert files in batches of X size
+                    // very small batches are slow due to overhead of executing many small queries
+                    // large batches don't seem to always work due to memory limits
+                    // as goldilocks says, 25000 is jusssttttt right.
+                    if batch_count == batch_size {
+                        let _res = conn.execute_batch(&new_query).await;
+
+                        if let Err(e) = _res {
+                            eprintln!("Error inserting batch: {}", e);
+                            println!("Query: {}", new_query);
+                        } else {
+                            println!("Inserted batch of {} files into database.", batch_count);
+                        }
+
+                        // Reset for next batch
+                        new_query.clear();
+
+                        new_query.push_str(
+        "INSERT OR REPLACE INTO files (path, filename, extension, size, modified_at) VALUES ",
+    );
+                        first = true;
+                        batch_count = 0;
+                    }
+                }
             }
         }
     }
 
-    tx.commit()?;
-    con.close().expect("Failed to close database connection");
+    // Insert any remaining files in the last batch
+    if batch_count > 0 && !first {
+        println!(
+            "Inserting final batch of {} files into database...",
+            batch_count
+        );
+        let _res = conn.execute_batch(&new_query).await;
+    }
+
+    let elapsed = now.elapsed();
+    println!(
+        "Inserted {} files into database in: {:.10?}",
+        count, elapsed
+    );
+
+    // conn.execute_batch(
+    //     "
+    //  INSERT INTO files_fts(filename, path, extension) SELECT filename, path, extension FROM files;",
+    // )
+    // .await?;
+
+    conn.execute("COMMIT;", params![]).await?;
+    println!("Database insertion completed successfully.");
+
     Ok(())
 }
 
-fn perform_search(query: &str) -> Result<()> {
+async fn perform_search(query: &str) -> Result<(), Box<dyn std::error::Error>> {
     use std::time::Instant;
     let now = Instant::now();
-    search::search_files(query)?;
+    search::search_files(query).await?;
     let elapsed = now.elapsed();
     println!("Search completed in: {:.10?}", elapsed);
     Ok(())
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     println!("Hello, world!");
-    create_db().expect("Failed to create database");
+    database::create_database(Some(true))
+        .await
+        .expect("Failed to create database");
 
     let search_result = run_search().expect("Failed to run search");
-    insert_files_to_db(search_result).expect("Failed to insert files to database");
-    // perform_search("").expect("Failed to perform search");
 
-    use std::io::{stdin, stdout, Write};
+    // return;
+    insert_files_to_db(search_result)
+        .await
+        .expect("Failed to insert files to database");
+    perform_search("config")
+        .await
+        .expect("Failed to perform search");
 
-    loop {// Prompt user for input
+    use std::io::stdin;
+
+    loop {
+        // Prompt user for input
         let mut input = String::new();
         println!("\nEnter search query:");
         stdin().read_line(&mut input).expect("Failed to read line");
@@ -196,11 +240,10 @@ fn main() {
         }
 
         // Perform search
-        if let Err(e) = perform_search(input.trim()) {
+        if let Err(e) = perform_search(input.trim()).await {
             eprintln!("❌ Error during search: {}", e);
         } else {
             println!("✅ Search completed successfully.");
         }
     }
 }
-

@@ -22,7 +22,6 @@ const SCHEMA: &str = "
 
 pub async fn create_database(reset: Option<bool>) -> Result<()> {
     let db = libsql::Builder::new_local("search.db").build().await?;
-    let conn = db.connect()?;
 
     if reset.unwrap_or(false) {
         conn.execute("DROP TABLE IF EXISTS files_fts", ()).await?;

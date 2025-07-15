@@ -1,15 +1,22 @@
+use std::sync::MutexGuard;
+
 use libsql::{params, Connection, Result};
 
 use crate::FileEntry;
 
-pub async fn search_files(query: &str) -> Result<()> {
-    let db = libsql::Builder::new_local("search.db").build().await?;
-    let conn = db.connect()?;
-
+pub async fn search_files(query: &str, conn: MutexGuard<'_, Connection>) -> Result<()> {
     println!("🔍 LIKE Search results for '{}':", query);
 
     // Use LIKE search for better performance
     search_with_like(query, &conn).await?;
+
+    // Print the number of rows in the 'files' table
+    let mut stmt = conn.prepare("SELECT COUNT(*) FROM files").await?;
+    let mut rows = stmt.query(()).await?;
+    if let Some(row) = rows.next().await? {
+        let count: i64 = row.get(0)?;
+        println!("📊 Total files in database: {}", count);
+    }
 
     Ok(())
 }
@@ -17,8 +24,17 @@ pub async fn search_files(query: &str) -> Result<()> {
 // Function using LIKE search
 async fn search_with_like(query: &str, conn: &Connection) -> Result<()> {
     let search_pattern = format!("%{}%", query);
+
+    // select 50 results from db where filename matches the search pattern
     let mut stmt = conn
-        .prepare("SELECT path, filename FROM files WHERE filename LIKE ?1 LIMIT 50")
+        .prepare(
+            "
+            SELECT path, filename 
+            FROM files 
+            WHERE filename 
+            LIKE ?1 
+            LIMIT 50",
+        )
         .await?;
 
     let mut rows = stmt.query([search_pattern.as_str()]).await?;
@@ -33,6 +49,7 @@ async fn search_with_like(query: &str, conn: &Connection) -> Result<()> {
         count += 1;
     }
 
+    // debug check if any files were found
     if count == 0 {
         println!("❌ No files found matching '{}'", query);
 

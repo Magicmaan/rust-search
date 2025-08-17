@@ -1,0 +1,140 @@
+# File indexing configuration for rust-search
+[settings]
+max_file_size_mb = 50        # Skip files larger than this size (in MB)
+max_depth = 10               # Maximum directory traversal depth
+include_hidden = false       # Whether to include hidden files/directories
+skip_binary = true           # Skip binary files automatically
+index_limit = 1000000        # Maximum number of files to index
+
+
+
+# Directories to skip (will not be indexed)
+skip_directories = [
+  # Existing entries
+  "node_modules",
+  "target",
+  "vendor",
+  ".git",
+  ".svn",
+  ".hg",
+  ".cache",
+  ".npm",
+  ".yarn",
+  "AppData",
+  "dist",
+  "build",
+  "out",
+  "obj",
+  "bin",
+  "__pycache__",
+  ".idea",
+  ".vscode",
+  ".config",
+  
+  # System directories - Linux
+  "proc",
+  "sys",
+  "dev",
+  "run",
+  "var/log",
+  "var/cache",
+  "var/tmp",
+  "var/spool",
+  "lost+found",
+  "mnt",
+  "media",
+  "boot",
+  "lib",
+  "lib64",
+  "opt",
+  "usr/lib",
+  "usr/include",
+  "usr/share/doc",
+  "usr/share/man",
+  
+  # System directories - Unix general
+  "etc",
+  "bin",
+  "sbin",
+  "usr/bin",
+  "usr/sbin",
+  "usr/local/bin",
+  "usr/local/sbin",
+  
+  # System temp and cache
+  "tmp",
+  "var/cache",
+  "var/tmp",
+  
+  # Desktop environment
+  ".dbus",
+  ".gvfs",
+  ".local/share/Trash",
+  ".thumbnails",
+  
+  # Package manager caches
+  ".cargo",
+  ".rustup",
+  ".gradle",
+  ".m2",
+  ".npm",
+  ".nvm",
+  ".pyenv",
+  ".rbenv",
+  
+  # Browser caches
+  ".mozilla/firefox/*/Cache",
+  "Library/Caches/Google/Chrome",
+  ".config/google-chrome/Default/Cache",
+  ".config/chromium/Default/Cache",
+  ".config/BraveSoftware/Brave-Browser/Default/Cache",
+
+  "Trash",
+]
+
+# File extensions to skip
+skip_extensions = [
+  "exe",
+  "dll",
+  "so",
+  "dylib",
+  "obj",
+  "o",
+  "class",
+  "pyc",
+  "pdb",
+  "bin",
+  "iso",
+  "img",
+  "lock"
+]
+
+# Path patterns to skip (regex patterns)
+skip_patterns = [
+  ".*\\.tmp$",
+  "/tmp/",
+  "/cache/",
+  "/\\.cache/",
+  ".*\\.tmp$",
+  "/tmp/",
+  "/cache/",
+  "/\\.cache/",
+  "/var/log/",
+  "/var/tmp/",
+  "/var/cache/",
+  "/dev/",
+  "/proc/",
+  "/sys/",
+  "/run/",
+  "/snap/",
+  "/opt/",
+  "/usr/share/doc/",
+  "/\\.Trash/",
+  "/\\.recycle/",
+]
+
+# Specific directories to include (overrides skip rules)
+force_include = [
+  "/home/theo/Documents/important",
+  "/home/theo/Projects"
+]
